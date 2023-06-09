@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:quiver/iterables.dart';
-import 'package:blokChar.dart';
-import 'package:boxInner.dart';
-import 'package:focusClass.dart';
+import 'blokChar.dart';
+import 'boxInner.dart';
+import 'focusClass.dart';
 import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'size_config.dart';
