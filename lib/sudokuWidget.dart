@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gaming/constants.dart';
 import 'package:quiver/iterables.dart';
 import 'package:gaming/blokChar.dart';
 import 'package:gaming/boxInner.dart';
@@ -46,17 +47,15 @@ class _SudokuWidgetState extends State<SudokuWidget> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     // lets put on ui
-    Color background_col = Colors.red.shade600;
-
     return Scaffold(
       appBar: AppBar(
         actions: [
           TextButton(
             onPressed: () => generateSudoku(),
-            style: TextButton.styleFrom(backgroundColor: Colors.transparent),
+            style: TextButton.styleFrom(backgroundColor: defaultTransparent),
             child: Icon(
               Icons.refresh,
-              color: Colors.white,
+              color: defaultWhite,
               size: getProportionateScreenWidth(24),
             ),
           ),
@@ -68,11 +67,11 @@ class _SudokuWidgetState extends State<SudokuWidget> {
             fontSize: getProportionateScreenWidth(30),
           ),
         ),
-        backgroundColor: Color.fromRGBO(243, 133, 60, 1),
+        backgroundColor: scaffoldbg,
         // centerTitle: true,
         // automaticallyImplyLeading: true,
       ),
-      // backgroundColor: Colors.blueAccent,
+      backgroundColor: defaultWhite,
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(
@@ -84,7 +83,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
               Container(
                 margin: EdgeInsets.all(getProportionateScreenWidth(20)),
                 // height: 400,
-                color: Color.fromARGB(130, 0, 0, 0),
+                color: defaultBlack,
                 padding: EdgeInsets.all(2.5),
                 width: double.maxFinite,
                 alignment: Alignment.center,
@@ -102,7 +101,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                     BoxInner boxInner = boxInners[index];
 
                     return Container(
-                      color: Colors.red.shade600,
+                      color: sudokuBlockbg,
                       alignment: Alignment.center,
                       child: GridView.builder(
                         itemCount: boxInner.blokChars.length,
@@ -117,25 +116,30 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                         physics: const ScrollPhysics(),
                         itemBuilder: (buildContext, indexChar) {
                           BlokChar blokChar = boxInner.blokChars[indexChar];
-                          Color color = Colors.yellow.shade100;
-                          Color colorText = Colors.black;
+                          Color color = emptyCellbg;
+                          Color colorText = defaultBlack;
 
                           // change color base condition
 
-                          if (isFinish)
-                            color = Colors.green;
-                          else if (blokChar.isFocus && blokChar.text != "")
-                            color = Color.fromARGB(255, 226, 246, 131);
-                          else if (blokChar.isDefault) color = Colors.white;
+                          if (isFinish) {
+                            color = solvedSudokubg;
+                          } else if (blokChar.isFocus && blokChar.text != "") {
+                            color = highlightedCellsbg;
+                          } else if (blokChar.isDefault) {
+                            color = defaultWhite;
+                          }
 
                           if (tapBoxIndex == "${index}-${indexChar}" &&
-                              !isFinish) color = Colors.grey.shade300;
+                              !isFinish) color = selectedCellbg;
 
-                          if (this.isFinish)
-                            colorText = Colors.white;
-                          else if (blokChar.isExist) colorText = Colors.red;
+                          if (isFinish) {
+                            colorText = defaultWhite;
+                          } else if (blokChar.isExist) {
+                            colorText = defaultRed;
+                          }
 
                           return Container(
+                            // padding: EdgeInsets.all(1),
                             color: color,
                             alignment: Alignment.center,
                             child: TextButton(
@@ -175,18 +179,21 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                                 // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
                                 onPressed: () => setInput(i),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: buttonbg,
                                   padding: EdgeInsets.symmetric(
-                                    vertical: getProportionateScreenHeight(22),
+                                    vertical: getProportionateScreenHeight(12),
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  side: BorderSide(
+                                    width: getProportionateScreenHeight(1),
                                   ),
                                 ),
                                 child: Text(
                                   "${i}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: defaultBlack,
                                     fontSize: getProportionateScreenWidth(18),
                                   ),
                                 ),
@@ -195,7 +202,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                         ],
                       ),
                       SizedBox(
-                        height: getProportionateScreenHeight(20),
+                        height: getProportionateScreenHeight(12),
                       ),
                       SizedBox(
                         width: getProportionateScreenWidth(100),
@@ -203,18 +210,21 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                           // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
                           onPressed: () => setInput(null),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: buttonbg,
                             padding: EdgeInsets.symmetric(
-                              vertical: getProportionateScreenHeight(20),
+                              vertical: getProportionateScreenHeight(12),
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
+                            ),
+                            side: BorderSide(
+                              width: getProportionateScreenWidth(1),
                             ),
                           ),
                           child: Text(
                             "Clear",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: defaultBlack,
                               fontSize: getProportionateScreenWidth(18),
                             ),
                           ),

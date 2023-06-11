@@ -1,4 +1,0 @@
-#Mon Jun 05 02:16:56 IST 2023
-base.0=D\:\\Users\\mohak\\Documents\\Work\\Internships\\Asheesh Gupta sir\\SamarthLife-gaming-0b9f39344ab1\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
