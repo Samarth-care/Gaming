@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:quiver/iterables.dart';
-import 'blokChar.dart';
-import 'boxInner.dart';
-import 'focusClass.dart';
+import 'package:gaming/blokChar.dart';
+import 'package:gaming/boxInner.dart';
+import 'package:gaming/focusClass.dart';
 import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'size_config.dart';
+import 'package:gaming/size_config.dart';
 
 class SudokuWidget extends StatefulWidget {
   const SudokuWidget({Key? key}) : super(key: key);
@@ -53,15 +53,20 @@ class _SudokuWidgetState extends State<SudokuWidget> {
         actions: [
           TextButton(
             onPressed: () => generateSudoku(),
-            child: Icon(Icons.refresh, color: Colors.white),
             style: TextButton.styleFrom(backgroundColor: Colors.transparent),
+            child: Icon(
+              Icons.refresh,
+              color: Colors.white,
+              size: getProportionateScreenWidth(24),
+            ),
           ),
         ],
         title: Text(
           "Sudoku",
           style: GoogleFonts.darkerGrotesque(
-              fontWeight: FontWeight.bold,
-              fontSize: getProportionateScreenWidth(30)),
+            fontWeight: FontWeight.bold,
+            fontSize: getProportionateScreenWidth(30),
+          ),
         ),
         backgroundColor: Color.fromRGBO(243, 133, 60, 1),
         // centerTitle: true,
@@ -70,11 +75,14 @@ class _SudokuWidgetState extends State<SudokuWidget> {
       // backgroundColor: Colors.blueAccent,
       body: SafeArea(
         child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: getProportionateScreenHeight(60),
+          ),
           alignment: Alignment.center,
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.all(20),
+                margin: EdgeInsets.all(getProportionateScreenWidth(20)),
                 // height: 400,
                 color: Color.fromARGB(130, 0, 0, 0),
                 padding: EdgeInsets.all(2.5),
@@ -83,13 +91,13 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                 child: GridView.builder(
                   itemCount: boxInners.length,
                   shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     childAspectRatio: 1,
                     crossAxisSpacing: 2.5,
                     mainAxisSpacing: 2.5,
                   ),
-                  physics: ScrollPhysics(),
+                  physics: const ScrollPhysics(),
                   itemBuilder: (buildContext, index) {
                     BoxInner boxInner = boxInners[index];
 
@@ -99,13 +107,14 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                       child: GridView.builder(
                         itemCount: boxInner.blokChars.length,
                         shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
                           childAspectRatio: 1,
                           crossAxisSpacing: 2,
                           mainAxisSpacing: 2,
                         ),
-                        physics: ScrollPhysics(),
+                        physics: const ScrollPhysics(),
                         itemBuilder: (buildContext, indexChar) {
                           BlokChar blokChar = boxInner.blokChars[indexChar];
                           Color color = Colors.yellow.shade100;
@@ -150,64 +159,67 @@ class _SudokuWidgetState extends State<SudokuWidget> {
               ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(getProportionateScreenWidth(40)),
+                  padding: EdgeInsets.all(getProportionateScreenWidth(20)),
                   alignment: Alignment.center,
-                  child: Row(
-                    // crossAxisAlignment: CrossAxisAlignment.stretch,
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GridView.builder(
-                        itemCount: 9,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 1,
-                          crossAxisSpacing: 1,
-                          mainAxisSpacing: 1,
-                        ),
-                        physics: ScrollPhysics(),
-                        itemBuilder: (buildContext, index) {
-                          return TextButton(
-                            // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
-                            onPressed: () => setInput(index + 1),
-                            child: Text(
-                              "${index + 1}",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: getProportionateScreenWidth(18),
-                              ),
-                            ),
-                            // style: ButtonStyle(
-                            //   backgroundColor:
-                            //       MaterialStateProperty.all<Color>(
-                            //           Colors.white),
-                            // ),
-                          );
-                        },
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: ElevatedButton(
-                            onPressed: () => setInput(null),
-                            child: Container(
-                              child: Text(
-                                "Clear",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: getProportionateScreenWidth(18),
+                      Row(
+                        // crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          for (int i = 1; i <= 9; i++)
+                            SizedBox(
+                              width: getProportionateScreenWidth(32),
+                              child: ElevatedButton(
+                                // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
+                                onPressed: () => setInput(i),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: getProportionateScreenHeight(22),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  "${i}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: getProportionateScreenWidth(18),
+                                  ),
                                 ),
                               ),
                             ),
-                            // style: ButtonStyle(
-                            //   backgroundColor: MaterialStateProperty.all<Color>(
-                            //       Colors.white),
-                            // ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      SizedBox(
+                        width: getProportionateScreenWidth(100),
+                        child: ElevatedButton(
+                          // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
+                          onPressed: () => setInput(null),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                              vertical: getProportionateScreenHeight(20),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            "Clear",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: getProportionateScreenWidth(18),
+                            ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

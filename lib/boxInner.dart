@@ -1,5 +1,4 @@
-// import 'package:blokChar.dart';
-import 'blokChar.dart';
+import 'package:gaming/blokChar.dart';
 
 class BoxInner {
   late int index;
