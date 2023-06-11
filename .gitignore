@@ -49,4 +49,7 @@ Thumbs.db
 *.wmv
 
 # Flutter ignore files
-
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
