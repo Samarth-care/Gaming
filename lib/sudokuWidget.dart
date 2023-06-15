@@ -46,6 +46,23 @@ class _SudokuWidgetState extends State<SudokuWidget> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    // var checkFinish = isFinish;
+    // if (checkFinish) {
+    //   showDialog(
+    //       context: context,
+    //       builder: (_) => AlertDialog(
+    //             title: const Text("What's New / Que ha Cambiado"),
+    //             content: Text("You have successfully completed the Sudoku"),
+    //             actions: <Widget>[
+    //               TextButton(
+    //                 child: const Text("OK"),
+    //                 onPressed: () {
+    //                   // Navigator.of(context).pop();
+    //                 },
+    //               )
+    //             ],
+    //           ));
+    // }
     // lets put on ui
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +72,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
             style: TextButton.styleFrom(backgroundColor: defaultTransparent),
             child: Icon(
               Icons.refresh,
-              color: defaultWhite,
+              color: defaultBlack,
               size: getProportionateScreenWidth(24),
             ),
           ),
@@ -63,11 +80,31 @@ class _SudokuWidgetState extends State<SudokuWidget> {
         title: Text(
           "Sudoku",
           style: GoogleFonts.darkerGrotesque(
-            fontWeight: FontWeight.bold,
-            fontSize: getProportionateScreenWidth(30),
+              fontWeight: FontWeight.w900,
+              fontSize: getProportionateScreenWidth(30),
+              color: Colors.black),
+        ),
+        // elevation: 0,
+        toolbarHeight: 70,
+        backgroundColor: scaffoldbg,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(0.0),
+          child: Container(
+            height: 3,
+            alignment: Alignment.bottomCenter,
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                  Color(0xFF019688),
+                  Color(0xFF183263),
+                  // Color(0xff1f2046),
+                  Color(0xFFbb1819),
+                  Color(0xFFfd8601)
+                ])),
           ),
         ),
-        backgroundColor: scaffoldbg,
         // centerTitle: true,
         // automaticallyImplyLeading: true,
       ),
@@ -75,7 +112,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenHeight(60),
+            vertical: getProportionateScreenHeight(30),
           ),
           alignment: Alignment.center,
           child: Column(
@@ -123,6 +160,26 @@ class _SudokuWidgetState extends State<SudokuWidget> {
 
                           if (isFinish) {
                             color = solvedSudokubg;
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (ctx) => AlertDialog(
+                            //     title: const Text("Alert Dialog Box"),
+                            //     content: const Text(
+                            //         "You have raised a Alert Dialog Box"),
+                            //     actions: <Widget>[
+                            //       TextButton(
+                            //         onPressed: () {
+                            //           Navigator.of(ctx).pop();
+                            //         },
+                            //         child: Container(
+                            //           color: Colors.green,
+                            //           padding: const EdgeInsets.all(14),
+                            //           child: const Text("okay"),
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // );
                           } else if (blokChar.isFocus && blokChar.text != "") {
                             color = highlightedCellsbg;
                           } else if (blokChar.isDefault) {
@@ -230,6 +287,31 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                           ),
                         ),
                       ),
+                      // ElevatedButton(
+                      // isFinish ?
+                      //   showDialog(
+                      //     context: context,
+                      //     builder: (ctx) => AlertDialog(
+                      //       title: const Text("Alert Dialog Box"),
+                      //       content: const Text(
+                      //           "You have raised a Alert Dialog Box"),
+                      //       actions: <Widget>[
+                      //         TextButton(
+                      //           onPressed: () {
+                      //             Navigator.of(ctx).pop();
+                      //           },
+                      //           child: Container(
+                      //             color: Colors.green,
+                      //             padding: const EdgeInsets.all(14),
+                      //             child: const Text("okay"),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   );
+                      // },
+                      //   child: const Text("Show alert Dialog box"),
+                      // ),
                     ],
                   ),
                 ),
@@ -244,7 +326,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
   generatePuzzle() {
     // install plugins sudoku generator to generate one
     boxInners.clear();
-    var sudokuGenerator = SudokuGenerator(emptySquares: 27); //54
+    var sudokuGenerator = SudokuGenerator(emptySquares: 1); //54
     // then we populate to get a possible cmbination
     // Quiver for easy populate collection using partition
     List<List<List<int>>> completes = partition(sudokuGenerator.newSudokuSolved,
