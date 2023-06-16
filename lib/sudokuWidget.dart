@@ -64,162 +64,164 @@ class _SudokuWidgetState extends State<SudokuWidget> {
     //           ));
     // }
     // lets put on ui
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          TextButton(
-            onPressed: () => generateSudoku(),
-            style: TextButton.styleFrom(backgroundColor: defaultTransparent),
-            child: Icon(
-              Icons.refresh,
-              color: defaultBlack,
-              size: getProportionateScreenWidth(24),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            TextButton(
+              onPressed: () => generateSudoku(),
+              style: TextButton.styleFrom(backgroundColor: defaultTransparent),
+              child: Icon(
+                Icons.refresh,
+                color: defaultBlack,
+                size: getProportionateScreenWidth(24),
+              ),
+            ),
+          ],
+          title: Text(
+            "Sudoku",
+            style: GoogleFonts.darkerGrotesque(
+                fontWeight: FontWeight.w900,
+                fontSize: getProportionateScreenWidth(30),
+                color: Colors.black),
+          ),
+          // elevation: 0,
+          toolbarHeight: 70,
+          backgroundColor: scaffoldbg,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(0.0),
+            child: Container(
+              height: 3,
+              alignment: Alignment.bottomCenter,
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: <Color>[
+                    Color(0xFF019688),
+                    Color(0xFF183263),
+                    // Color(0xff1f2046),
+                    Color(0xFFbb1819),
+                    Color(0xFFfd8601)
+                  ])),
             ),
           ),
-        ],
-        title: Text(
-          "Sudoku",
-          style: GoogleFonts.darkerGrotesque(
-              fontWeight: FontWeight.w900,
-              fontSize: getProportionateScreenWidth(30),
-              color: Colors.black),
+          // centerTitle: true,
+          // automaticallyImplyLeading: true,
         ),
-        // elevation: 0,
-        toolbarHeight: 70,
-        backgroundColor: scaffoldbg,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(0.0),
+        backgroundColor: defaultWhite,
+        body: SingleChildScrollView(
           child: Container(
-            height: 3,
-            alignment: Alignment.bottomCenter,
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: <Color>[
-                  Color(0xFF019688),
-                  Color(0xFF183263),
-                  // Color(0xff1f2046),
-                  Color(0xFFbb1819),
-                  Color(0xFFfd8601)
-                ])),
-          ),
-        ),
-        // centerTitle: true,
-        // automaticallyImplyLeading: true,
-      ),
-      backgroundColor: defaultWhite,
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: getProportionateScreenHeight(30),
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.all(getProportionateScreenWidth(20)),
-                // height: 400,
-                color: defaultBlack,
-                padding: EdgeInsets.all(2.5),
-                width: double.maxFinite,
-                alignment: Alignment.center,
-                child: GridView.builder(
-                  itemCount: boxInners.length,
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 2.5,
-                    mainAxisSpacing: 2.5,
-                  ),
-                  physics: const ScrollPhysics(),
-                  itemBuilder: (buildContext, index) {
-                    BoxInner boxInner = boxInners[index];
+            padding: EdgeInsets.symmetric(
+              vertical: getProportionateScreenHeight(20),
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(getProportionateScreenWidth(20)),
+                  // height: 400,
+                  color: defaultBlack,
+                  padding: const EdgeInsets.all(2.5),
+                  width: double.maxFinite,
+                  alignment: Alignment.center,
+                  child: GridView.builder(
+                    itemCount: boxInners.length,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 2.5,
+                      mainAxisSpacing: 2.5,
+                    ),
+                    physics: const ScrollPhysics(),
+                    itemBuilder: (buildContext, index) {
+                      BoxInner boxInner = boxInners[index];
 
-                    return Container(
-                      color: sudokuBlockbg,
-                      alignment: Alignment.center,
-                      child: GridView.builder(
-                        itemCount: boxInner.blokChars.length,
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 1,
-                          crossAxisSpacing: 2,
-                          mainAxisSpacing: 2,
-                        ),
-                        physics: const ScrollPhysics(),
-                        itemBuilder: (buildContext, indexChar) {
-                          BlokChar blokChar = boxInner.blokChars[indexChar];
-                          Color color = emptyCellbg;
-                          Color colorText = defaultBlack;
+                      return Container(
+                        color: sudokuBlockbg,
+                        alignment: Alignment.center,
+                        child: GridView.builder(
+                          itemCount: boxInner.blokChars.length,
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 1,
+                            crossAxisSpacing: 2.5,
+                            mainAxisSpacing: 2.5,
+                          ),
+                          physics: const ScrollPhysics(),
+                          itemBuilder: (buildContext, indexChar) {
+                            BlokChar blokChar = boxInner.blokChars[indexChar];
+                            Color color = emptyCellbg;
+                            Color colorText = defaultBlack;
 
-                          // change color base condition
+                            // change color base condition
 
-                          if (isFinish) {
-                            color = solvedSudokubg;
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (ctx) => AlertDialog(
-                            //     title: const Text("Alert Dialog Box"),
-                            //     content: const Text(
-                            //         "You have raised a Alert Dialog Box"),
-                            //     actions: <Widget>[
-                            //       TextButton(
-                            //         onPressed: () {
-                            //           Navigator.of(ctx).pop();
-                            //         },
-                            //         child: Container(
-                            //           color: Colors.green,
-                            //           padding: const EdgeInsets.all(14),
-                            //           child: const Text("okay"),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // );
-                          } else if (blokChar.isFocus && blokChar.text != "") {
-                            color = highlightedCellsbg;
-                          } else if (blokChar.isDefault) {
-                            color = defaultWhite;
-                          }
+                            if (isFinish) {
+                              color = solvedSudokubg;
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (ctx) => AlertDialog(
+                              //     title: const Text("Alert Dialog Box"),
+                              //     content: const Text(
+                              //         "You have raised a Alert Dialog Box"),
+                              //     actions: <Widget>[
+                              //       TextButton(
+                              //         onPressed: () {
+                              //           Navigator.of(ctx).pop();
+                              //         },
+                              //         child: Container(
+                              //           color: Colors.green,
+                              //           padding: const EdgeInsets.all(14),
+                              //           child: const Text("okay"),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // );
+                            } else if (blokChar.isFocus &&
+                                blokChar.text != "") {
+                              color = highlightedCellsbg;
+                            } else if (blokChar.isDefault) {
+                              color = defaultWhite;
+                            }
 
-                          if (tapBoxIndex == "${index}-${indexChar}" &&
-                              !isFinish) color = selectedCellbg;
+                            if (tapBoxIndex == "${index}-${indexChar}" &&
+                                !isFinish) color = selectedCellbg;
 
-                          if (isFinish) {
-                            colorText = defaultWhite;
-                          } else if (blokChar.isExist) {
-                            colorText = defaultRed;
-                          }
+                            if (isFinish) {
+                              colorText = defaultWhite;
+                            } else if (blokChar.isExist) {
+                              colorText = defaultRed;
+                            }
 
-                          return Container(
-                            // padding: EdgeInsets.all(1),
-                            color: color,
-                            alignment: Alignment.center,
-                            child: TextButton(
-                              onPressed: blokChar.isDefault
-                                  ? null
-                                  : () => setFocus(index, indexChar),
-                              child: Text(
-                                "${blokChar.text}",
-                                style: TextStyle(
-                                  color: colorText,
-                                  fontSize: getProportionateScreenWidth(18),
+                            return Container(
+                              // padding: EdgeInsets.all(1),
+                              color: color,
+                              alignment: Alignment.center,
+                              child: TextButton(
+                                onPressed: blokChar.isDefault
+                                    ? null
+                                    : () => setFocus(index, indexChar),
+                                child: Text(
+                                  "${blokChar.text}",
+                                  style: TextStyle(
+                                    color: colorText,
+                                    fontSize: getProportionateScreenWidth(18),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Container(
+                Container(
                   padding: EdgeInsets.all(getProportionateScreenWidth(20)),
                   alignment: Alignment.center,
                   child: Column(
@@ -314,9 +316,9 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                       // ),
                     ],
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -326,7 +328,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
   generatePuzzle() {
     // install plugins sudoku generator to generate one
     boxInners.clear();
-    var sudokuGenerator = SudokuGenerator(emptySquares: 1); //54
+    var sudokuGenerator = SudokuGenerator(emptySquares: 27); //54
     // then we populate to get a possible cmbination
     // Quiver for easy populate collection using partition
     List<List<List<int>>> completes = partition(sudokuGenerator.newSudokuSolved,
