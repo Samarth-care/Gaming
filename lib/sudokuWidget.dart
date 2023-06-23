@@ -11,7 +11,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gaming/size_config.dart';
 
 class SudokuWidget extends StatefulWidget {
-  const SudokuWidget({Key? key}) : super(key: key);
+  SudokuWidget({Key? key, this.sudokuAppBar}) : super(key: key);
+
+  AppBar? sudokuAppBar;
 
   @override
   State<SudokuWidget> createState() => _SudokuWidgetState();
@@ -45,6 +47,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // final args = ModalRoute.of(context)!.settings.arguments as SudokuWidget;
     SizeConfig().init(context);
     // var checkFinish = isFinish;
     // if (checkFinish) {
@@ -66,49 +69,51 @@ class _SudokuWidgetState extends State<SudokuWidget> {
     // lets put on ui
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            TextButton(
-              onPressed: () => generateSudoku(),
-              style: TextButton.styleFrom(backgroundColor: defaultTransparent),
-              child: Icon(
-                Icons.refresh,
-                color: defaultBlack,
-                size: getProportionateScreenWidth(24),
+        appBar: widget.sudokuAppBar ??
+            AppBar(
+              actions: [
+                TextButton(
+                  onPressed: () => generateSudoku(),
+                  style:
+                      TextButton.styleFrom(backgroundColor: defaultTransparent),
+                  child: Icon(
+                    Icons.refresh,
+                    color: defaultBlack,
+                    size: getProportionateScreenWidth(24),
+                  ),
+                ),
+              ],
+              title: Text(
+                "Sudoku",
+                style: GoogleFonts.darkerGrotesque(
+                    fontWeight: FontWeight.w900,
+                    fontSize: getProportionateScreenWidth(30),
+                    color: Colors.black),
               ),
+              // elevation: 0,
+              toolbarHeight: 70,
+              backgroundColor: scaffoldbg,
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(0.0),
+                child: Container(
+                  height: 3,
+                  alignment: Alignment.bottomCenter,
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: <Color>[
+                        Color(0xFF019688),
+                        Color(0xFF183263),
+                        // Color(0xff1f2046),
+                        Color(0xFFbb1819),
+                        Color(0xFFfd8601)
+                      ])),
+                ),
+              ),
+              // centerTitle: true,
+              // automaticallyImplyLeading: true,
             ),
-          ],
-          title: Text(
-            "Sudoku",
-            style: GoogleFonts.darkerGrotesque(
-                fontWeight: FontWeight.w900,
-                fontSize: getProportionateScreenWidth(30),
-                color: Colors.black),
-          ),
-          // elevation: 0,
-          toolbarHeight: 70,
-          backgroundColor: scaffoldbg,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(0.0),
-            child: Container(
-              height: 3,
-              alignment: Alignment.bottomCenter,
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: <Color>[
-                    Color(0xFF019688),
-                    Color(0xFF183263),
-                    // Color(0xff1f2046),
-                    Color(0xFFbb1819),
-                    Color(0xFFfd8601)
-                  ])),
-            ),
-          ),
-          // centerTitle: true,
-          // automaticallyImplyLeading: true,
-        ),
         backgroundColor: defaultWhite,
         body: SingleChildScrollView(
           child: Container(
