@@ -53,3 +53,4 @@ Thumbs.db
 build/
 .flutter-plugins
 .flutter-plugins-dependencies
+lib/main_2.dart
