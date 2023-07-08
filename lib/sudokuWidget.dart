@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gaming/constants.dart';
+// import 'package:gaming/constants.dart';
 import 'package:quiver/iterables.dart';
 import 'package:gaming/blokChar.dart';
 import 'package:gaming/boxInner.dart';
@@ -15,13 +15,27 @@ class SudokuWidget extends StatefulWidget {
 
   AppBar? sudokuAppBar;
 
+  Color defaultBlack = Colors.black;
+  Color defaultWhite = Colors.white;
+  Color defaultTransparent = Colors.transparent;
+  Color defaultRed = Colors.red;
+
+  Color sudokuBlockFG = const Color.fromARGB(255, 55, 55, 55);
+  Color sudokuBlockBG = Colors.red.shade600;
+  Color scaffoldbg = Colors.white;
+  Color emptyCellbg = Colors.yellow.shade100;
+  Color solvedSudokubg = const Color.fromARGB(255, 75, 181, 67);
+  Color highlightedCellsbg = const Color.fromARGB(255, 226, 246, 131);
+  Color selectedCellbg = Colors.grey.shade300;
+
+  Color buttonbg = Colors.grey.shade50;
+
   @override
   State<SudokuWidget> createState() => _SudokuWidgetState();
 }
 
 class _SudokuWidgetState extends State<SudokuWidget> {
   // our variable
-
   List<BoxInner> boxInners = [];
   FocusClass focusClass = FocusClass();
   bool isFinish = false;
@@ -47,7 +61,6 @@ class _SudokuWidgetState extends State<SudokuWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final args = ModalRoute.of(context)!.settings.arguments as SudokuWidget;
     SizeConfig().init(context);
     // var checkFinish = isFinish;
     // if (checkFinish) {
@@ -66,19 +79,21 @@ class _SudokuWidgetState extends State<SudokuWidget> {
     //             ],
     //           ));
     // }
+
     // lets put on ui
     return SafeArea(
       child: Scaffold(
         appBar: widget.sudokuAppBar ??
             AppBar(
+              iconTheme: IconThemeData(color: widget.defaultBlack),
               actions: [
                 TextButton(
                   onPressed: () => generateSudoku(),
-                  style:
-                      TextButton.styleFrom(backgroundColor: defaultTransparent),
+                  style: TextButton.styleFrom(
+                      backgroundColor: widget.defaultTransparent),
                   child: Icon(
                     Icons.refresh,
-                    color: defaultBlack,
+                    color: widget.defaultBlack,
                     size: getProportionateScreenWidth(24),
                   ),
                 ),
@@ -92,29 +107,31 @@ class _SudokuWidgetState extends State<SudokuWidget> {
               ),
               // elevation: 0,
               toolbarHeight: 70,
-              backgroundColor: scaffoldbg,
+              backgroundColor: widget.scaffoldbg,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(0.0),
                 child: Container(
                   height: 3,
                   alignment: Alignment.bottomCenter,
                   decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: <Color>[
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: <Color>[
                         Color(0xFF019688),
                         Color(0xFF183263),
                         // Color(0xff1f2046),
                         Color(0xFFbb1819),
                         Color(0xFFfd8601)
-                      ])),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              // centerTitle: true,
+              centerTitle: true,
               // automaticallyImplyLeading: true,
             ),
-        backgroundColor: defaultWhite,
+        backgroundColor: widget.defaultWhite,
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.symmetric(
@@ -126,7 +143,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                 Container(
                   margin: EdgeInsets.all(getProportionateScreenWidth(20)),
                   // height: 400,
-                  color: defaultBlack,
+                  color: widget.defaultBlack,
                   padding: const EdgeInsets.all(2.5),
                   width: double.maxFinite,
                   alignment: Alignment.center,
@@ -137,15 +154,15 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: 1,
-                      crossAxisSpacing: 2.5,
-                      mainAxisSpacing: 2.5,
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
                     ),
                     physics: const ScrollPhysics(),
                     itemBuilder: (buildContext, index) {
                       BoxInner boxInner = boxInners[index];
 
                       return Container(
-                        color: sudokuBlockbg,
+                        color: widget.sudokuBlockBG,
                         alignment: Alignment.center,
                         child: GridView.builder(
                           itemCount: boxInner.blokChars.length,
@@ -154,19 +171,19 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             childAspectRatio: 1,
-                            crossAxisSpacing: 2.5,
-                            mainAxisSpacing: 2.5,
+                            crossAxisSpacing: 1.5,
+                            mainAxisSpacing: 1.5,
                           ),
                           physics: const ScrollPhysics(),
                           itemBuilder: (buildContext, indexChar) {
                             BlokChar blokChar = boxInner.blokChars[indexChar];
-                            Color color = emptyCellbg;
-                            Color colorText = defaultBlack;
+                            Color color = widget.emptyCellbg;
+                            Color colorText = widget.sudokuBlockFG;
 
                             // change color base condition
 
                             if (isFinish) {
-                              color = solvedSudokubg;
+                              color = widget.solvedSudokubg;
                               // showDialog(
                               //   context: context,
                               //   builder: (ctx) => AlertDialog(
@@ -189,18 +206,18 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                               // );
                             } else if (blokChar.isFocus &&
                                 blokChar.text != "") {
-                              color = highlightedCellsbg;
+                              color = widget.highlightedCellsbg;
                             } else if (blokChar.isDefault) {
-                              color = defaultWhite;
+                              color = widget.defaultWhite;
                             }
 
                             if (tapBoxIndex == "${index}-${indexChar}" &&
-                                !isFinish) color = selectedCellbg;
+                                !isFinish) color = widget.selectedCellbg;
 
                             if (isFinish) {
-                              colorText = defaultWhite;
+                              colorText = widget.defaultWhite;
                             } else if (blokChar.isExist) {
-                              colorText = defaultRed;
+                              colorText = widget.defaultRed;
                             }
 
                             return Container(
@@ -208,6 +225,9 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                               color: color,
                               alignment: Alignment.center,
                               child: TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(0),
+                                ),
                                 onPressed: blokChar.isDefault
                                     ? null
                                     : () => setFocus(index, indexChar),
@@ -215,7 +235,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                                   "${blokChar.text}",
                                   style: TextStyle(
                                     color: colorText,
-                                    fontSize: getProportionateScreenWidth(18),
+                                    fontSize: getProportionateScreenWidth(20),
                                   ),
                                 ),
                               ),
@@ -243,7 +263,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                                 // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
                                 onPressed: () => setInput(i),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: buttonbg,
+                                  backgroundColor: widget.buttonbg,
                                   padding: EdgeInsets.symmetric(
                                     vertical: getProportionateScreenHeight(12),
                                   ),
@@ -257,7 +277,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                                 child: Text(
                                   "${i}",
                                   style: TextStyle(
-                                    color: defaultBlack,
+                                    color: widget.defaultBlack,
                                     fontSize: getProportionateScreenWidth(18),
                                   ),
                                 ),
@@ -274,7 +294,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                           // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
                           onPressed: () => setInput(null),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: buttonbg,
+                            backgroundColor: widget.buttonbg,
                             padding: EdgeInsets.symmetric(
                               vertical: getProportionateScreenHeight(12),
                             ),
@@ -288,7 +308,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                           child: Text(
                             "Clear",
                             style: TextStyle(
-                              color: defaultBlack,
+                              color: widget.defaultBlack,
                               fontSize: getProportionateScreenWidth(18),
                             ),
                           ),
