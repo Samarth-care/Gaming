@@ -14,16 +14,17 @@ class SudokuWidget extends StatefulWidget {
   SudokuWidget({
     Key? key,
     this.sudokuAppBar,
-    this.outerBorderColor,
-    this.bottomButtonColor,
-    this.finishedSudokuBlockFG,
+    this.outerBorderColor = Colors.black,
+    this.finishedSudokuBlockFG = Colors.white,
     this.sudokuBlockFG,
     this.sudokuBlockBG,
-    this.scaffoldBG,
+    this.scaffoldBG = Colors.white,
     this.emptyCellBG,
     this.solvedSudokuBG,
     this.highlightedCellsBG,
     this.selectedCellBG,
+    this.buttonFG = Colors.black,
+    this.buttonBG,
   }) : super(key: key);
 
   AppBar? sudokuAppBar;
@@ -34,17 +35,17 @@ class SudokuWidget extends StatefulWidget {
   Color defaultRed = Colors.red;
 
   Color? outerBorderColor = Colors.black;
-  Color? bottomButtonColor = Colors.black;
   Color? finishedSudokuBlockFG = Colors.white;
-  Color? sudokuBlockFG = const Color.fromARGB(255, 55, 55, 55);
-  Color? sudokuBlockBG = Colors.red.shade600;
+  Color? sudokuBlockFG;
+  Color? sudokuBlockBG;
   Color? scaffoldBG = Colors.white;
-  Color? emptyCellBG = Colors.yellow.shade100;
-  Color? solvedSudokuBG = const Color.fromARGB(255, 75, 181, 67);
-  Color? highlightedCellsBG = const Color.fromARGB(255, 226, 246, 131);
-  Color? selectedCellBG = Colors.grey.shade300;
+  Color? emptyCellBG;
+  Color? solvedSudokuBG;
+  Color? highlightedCellsBG;
+  Color? selectedCellBG;
 
-  Color buttonbg = Colors.grey.shade50;
+  Color? buttonBG = Colors.grey.shade50;
+  Color? buttonFG = Colors.black;
 
   @override
   State<SudokuWidget> createState() => _SudokuWidgetState();
@@ -178,7 +179,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                       BoxInner boxInner = boxInners[index];
 
                       return Container(
-                        color: widget.sudokuBlockBG,
+                        color: widget.sudokuBlockBG ?? Colors.red.shade600,
                         alignment: Alignment.center,
                         child: GridView.builder(
                           itemCount: boxInner.blokChars.length,
@@ -193,13 +194,16 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                           physics: const ScrollPhysics(),
                           itemBuilder: (buildContext, indexChar) {
                             BlokChar blokChar = boxInner.blokChars[indexChar];
-                            Color? color = widget.emptyCellBG;
-                            Color? colorText = widget.sudokuBlockFG;
+                            Color? color =
+                                widget.emptyCellBG ?? Colors.yellow.shade100;
+                            Color? colorText = widget.sudokuBlockFG ??
+                                const Color.fromARGB(255, 55, 55, 55);
 
                             // change color base condition
 
                             if (isFinish) {
-                              color = widget.solvedSudokuBG;
+                              color = widget.solvedSudokuBG ??
+                                  const Color.fromARGB(255, 75, 181, 67);
                               // showDialog(
                               //   context: context,
                               //   builder: (ctx) => AlertDialog(
@@ -222,13 +226,17 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                               // );
                             } else if (blokChar.isFocus &&
                                 blokChar.text != "") {
-                              color = widget.highlightedCellsBG;
+                              color = widget.highlightedCellsBG ??
+                                  const Color.fromARGB(255, 226, 246, 131);
                             } else if (blokChar.isDefault) {
                               color = widget.defaultWhite;
                             }
 
                             if (tapBoxIndex == "${index}-${indexChar}" &&
-                                !isFinish) color = widget.selectedCellBG;
+                                !isFinish) {
+                              color =
+                                  widget.selectedCellBG ?? Colors.grey.shade300;
+                            }
 
                             if (isFinish) {
                               colorText = widget.finishedSudokuBlockFG;
@@ -279,7 +287,8 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                                 // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
                                 onPressed: () => setInput(i),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: widget.buttonbg,
+                                  backgroundColor:
+                                      widget.buttonBG ?? Colors.grey.shade50,
                                   padding: EdgeInsets.symmetric(
                                     vertical: getProportionateScreenHeight(12),
                                   ),
@@ -293,7 +302,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                                 child: Text(
                                   "${i}",
                                   style: TextStyle(
-                                    color: widget.bottomButtonColor,
+                                    color: widget.buttonFG,
                                     fontSize: getProportionateScreenWidth(18),
                                   ),
                                 ),
@@ -310,7 +319,8 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                           // style: ElevatedButton.styleFrom(padding: EdgeInsets.all(5)),
                           onPressed: () => setInput(null),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: widget.buttonbg,
+                            backgroundColor:
+                                widget.buttonBG ?? Colors.grey.shade50,
                             padding: EdgeInsets.symmetric(
                               vertical: getProportionateScreenHeight(12),
                             ),
@@ -324,7 +334,7 @@ class _SudokuWidgetState extends State<SudokuWidget> {
                           child: Text(
                             "Clear",
                             style: TextStyle(
-                              color: widget.bottomButtonColor,
+                              color: widget.buttonFG,
                               fontSize: getProportionateScreenWidth(18),
                             ),
                           ),
