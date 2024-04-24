@@ -1,0 +1,3 @@
+[submodule "flutter-tetris-main"]
+	path = flutter-tetris-main
+	url = https://github.com/hnvmeta/flutter-tetris.git
