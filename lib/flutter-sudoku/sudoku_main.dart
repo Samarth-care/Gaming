@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gaming/sudokuWidget.dart';
+import 'package:gaming/flutter-sudoku/sudokuWidget.dart';
 
 void main() {
   runApp(const MyApp());

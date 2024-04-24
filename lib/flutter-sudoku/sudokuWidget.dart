@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 // import 'package:gaming/constants.dart';
 import 'package:quiver/iterables.dart';
-import 'package:gaming/blokChar.dart';
-import 'package:gaming/boxInner.dart';
-import 'package:gaming/focusClass.dart';
+import 'package:gaming/flutter-sudoku/blokChar.dart';
+import 'package:gaming/flutter-sudoku/boxInner.dart';
+import 'package:gaming/flutter-sudoku/focusClass.dart';
 import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gaming/size_config.dart';
+import 'package:gaming/flutter-sudoku/size_config.dart';
 
 class SudokuWidget extends StatefulWidget {
   SudokuWidget({

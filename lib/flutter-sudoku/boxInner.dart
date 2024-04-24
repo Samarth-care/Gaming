@@ -1,4 +1,4 @@
-import 'package:gaming/blokChar.dart';
+import 'package:gaming/flutter-sudoku/blokChar.dart';
 
 class BoxInner {
   late int index;
